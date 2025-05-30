@@ -1,2 +1,2 @@
 # mytems-purchase-orchestrator
-Micro-service based project: User
+Micro-service based project: Orchestrator
