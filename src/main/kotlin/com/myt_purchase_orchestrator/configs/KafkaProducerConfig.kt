@@ -1,6 +1,7 @@
 package com.myt_purchase_orchestrator.configs
 
-import com.myt_purchase_orchestrator.dtos.SavePurchaseDto
+import com.myt_purchase_orchestrator.dtos.EventSavePurchaseDto
+import com.myt_purchase_orchestrator.dtos.EventUpdateItemStatusDto
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
@@ -15,7 +16,7 @@ class KafkaProducerConfig(
     @Value("\${spring.kafka.bootstrap-servers}")
     val bootstrapServer: String) {
 
-    fun producerFactory(): ProducerFactory<String, SavePurchaseDto>{
+    private fun <T> buildProducerFactory(): ProducerFactory<String, T>{
         val config = mapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServer,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
@@ -24,6 +25,9 @@ class KafkaProducerConfig(
         return DefaultKafkaProducerFactory(config)
     }
 
-    fun templateKafka(): KafkaTemplate<String, SavePurchaseDto> =
-        KafkaTemplate(producerFactory())
+    fun eventSavePurchaseDtoTemplate(): KafkaTemplate<String, EventSavePurchaseDto> =
+        KafkaTemplate(buildProducerFactory())
+
+    fun eventUpdateItemStatusTemplate(): KafkaTemplate<String, EventUpdateItemStatusDto> =
+        KafkaTemplate(buildProducerFactory())
 }
