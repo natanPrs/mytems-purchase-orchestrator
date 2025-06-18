@@ -1,10 +1,10 @@
 package com.myt_purchase_orchestrator.mappers
 
-import com.myt_purchase_orchestrator.dtos.EventUpdateItemStatus
+import com.myt_purchase_orchestrator.dtos.EventUpdateItemStatusDto
 import com.myt_purchase_orchestrator.dtos.PurchaseDto
 
-fun PurchaseDto.toEventUpdateStatus(): EventUpdateItemStatus =
-    EventUpdateItemStatus(
-        itemId = this.itemId,
+fun PurchaseDto.toEventUpdateStatus(): EventUpdateItemStatusDto =
+    EventUpdateItemStatusDto(
+        globalItemId = this.globalItemId,
         newStatus = "SOLD",
     )

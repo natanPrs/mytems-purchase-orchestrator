@@ -4,8 +4,8 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.UUID
 
-data class SavePurchaseDto(
-    val itemId: UUID,
+data class EventSavePurchaseDto(
+    val globalItemId: UUID,
 
     val sellerId: UUID,
 
