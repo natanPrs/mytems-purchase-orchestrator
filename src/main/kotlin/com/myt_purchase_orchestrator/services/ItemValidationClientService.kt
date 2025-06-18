@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import java.math.BigDecimal
 
-@FeignClient(name = "item-validation-service", url = "http://localhost:8082/catalog")
+@FeignClient(name = "item-validation-service", url = "http://localhost:8082/validate-items")
 interface ItemValidationClientService {
 
     @PostMapping("/purchase-validate-item")
