@@ -1,4 +1,4 @@
-package com.myt_purchase_orchestrator.outbox
+package com.myt_purchase_orchestrator.outbox.model
 
 import com.myt_purchase_orchestrator.enums.OutboxEventStatus
 import jakarta.persistence.Entity
