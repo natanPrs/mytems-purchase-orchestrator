@@ -1,5 +1,7 @@
-package com.myt_purchase_orchestrator.outbox
+package com.myt_purchase_orchestrator.outbox.service
 
+import com.myt_purchase_orchestrator.outbox.model.OutboxEventModel
+import com.myt_purchase_orchestrator.outbox.repository.OutboxRepository
 import org.springframework.stereotype.Service
 
 @Service
