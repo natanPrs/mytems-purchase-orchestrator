@@ -6,7 +6,7 @@ import com.myt_purchase_orchestrator.producers.PurchaseKafkaProducer
 import org.springframework.stereotype.Component
 
 @Component
-class sendSavePurchaseEvent(
+class SendSavePurchaseEvent(
     private val purchaseKafkaProducer: PurchaseKafkaProducer,
     private val objectMapper: ObjectMapper,
 ) : EventStrategy {
