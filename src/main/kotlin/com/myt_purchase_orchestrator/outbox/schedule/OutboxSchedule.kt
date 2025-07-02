@@ -2,9 +2,10 @@ package com.myt_purchase_orchestrator.outbox.schedule
 
 import com.myt_purchase_orchestrator.enums.OutboxEventStatus
 import com.myt_purchase_orchestrator.outbox.repository.OutboxRepository
-import com.myt_purchase_orchestrator.outbox.service.sendItemStatusEvent
-import com.myt_purchase_orchestrator.outbox.service.sendSavePurchaseEvent
-import com.myt_purchase_orchestrator.outbox.service.sendUserUpdateEvent
+import com.myt_purchase_orchestrator.outbox.service.EventStrategyFactory
+import com.myt_purchase_orchestrator.outbox.service.SendItemStatusEvent
+import com.myt_purchase_orchestrator.outbox.service.SendSavePurchaseEvent
+import com.myt_purchase_orchestrator.outbox.service.SendUserUpdateEvent
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Component
 @Component
 class OutboxSchedule(
     private val outboxRepository: OutboxRepository,
-    private val sendItemStatusEvent: sendItemStatusEvent,
-    private val sendSavePurchaseEvent: sendSavePurchaseEvent,
-    private val sendUserUpdateEvent: sendUserUpdateEvent,
+    private val eventStrategyFactory: EventStrategyFactory,
 ) {
     private val logger = LoggerFactory.getLogger(OutboxSchedule::class.java)
 
@@ -26,12 +25,9 @@ class OutboxSchedule(
             try {
                 logger.info("Sending event: {}", event.payload)
 
-                when (event.eventType) {
-                    "SEND_SAVE_PURCHASE_EVENT" -> sendSavePurchaseEvent.sendToKafkaTopic(event.payload)
-                    "SEND_ITEM_STATUS_EVENT" -> sendItemStatusEvent.sendToKafkaTopic(event.payload)
-                    "SEND_USER_UPDATE_EVENT" -> sendUserUpdateEvent.sendToKafkaTopic(event.payload)
-                    else -> logger.warn("Unknow event type: {}", event.eventType)
-                }
+                val eventType = eventStrategyFactory.createEvent(event.eventType)
+
+                eventType.sendToKafkaTopic(event.payload)
 
                 event.status = OutboxEventStatus.SENT
                 outboxRepository.save(event)
